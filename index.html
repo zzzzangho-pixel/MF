@@ -31,15 +31,15 @@
       const files = [
         ["runtime-01.bin", 8000000],
         ["runtime-02.bin", 8000000],
-        ["runtime-03.bin", 8000000],
-        ["runtime-04.bin", 8000000],
-        ["runtime-05.bin", 8000000],
-        ["runtime-06.bin", 8000000],
-        ["runtime-07.bin", 8000000],
-        ["runtime-08.bin", 3858815]
+        ["runtime-v47-03.bin", 8000000],
+        ["runtime-v47-04.bin", 8000000],
+        ["runtime-v47-05.bin", 8000000],
+        ["runtime-v47-06.bin", 8000000],
+        ["runtime-v47-07.bin", 8000000],
+        ["runtime-v47-08.bin", 3865585]
       ];
-      const expectedLength = 59858815;
-      const expectedHash = "ed76b05ea8413fe3487d42f6987e00e69a2680dd4a55b190db41ed152319de44";
+      const expectedLength = 59865585;
+      const expectedHash = "4caa5bdb5d3e56662e0d68c82ab327747f583bb1cb727e9f4910be6cd194eab4";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -52,7 +52,9 @@
         hint.textContent = "잠시만 기다려 주세요.";
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
-            const response = await fetch(new URL(name, document.baseURI), {
+            const url = new URL(name, document.baseURI);
+            url.searchParams.set("v", "v47-4caa5bdb5d3e5666");
+            const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache"
             });
             if (!response.ok) throw new Error("Unable to load game");
