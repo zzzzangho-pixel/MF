@@ -29,18 +29,18 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v48-01.bin", 8000000],
-        ["runtime-v48-prefix-tail.bin", 538],
+        ["runtime-v49b-01.bin", 8000000],
+        ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
         ["runtime-v47-03.bin", 8000000],
         ["runtime-v47-04.bin", 8000000],
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v47-07.bin", 8000000],
-        ["runtime-v47-08.bin", 3865585]
+        ["runtime-v49-03.bin", 3870273]
       ];
-      const expectedLength = 59866123;
-      const expectedHash = "1b97505f03f5cb2e44c9830f9d6c147aa2f0d6b79e6d8c551d4d18107857e159";
+      const expectedLength = 59871001;
+      const expectedHash = "74f10718bd93feb635bd814f8e96618d9525363a24097cb31d5b430e874ab3cf";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -54,7 +54,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v48-1b97505f03f5cb2e");
+            url.searchParams.set("v", "v49-74f10718bd93feb6");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache"
             });
