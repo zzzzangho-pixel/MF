@@ -41,10 +41,10 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v47-07.bin", 8000000],
-        ["runtime-v55b-03.bin", 3879951]
+        ["runtime-v56-01.bin", 3932581]
       ];
-      const expectedLength = 59892994;
-      const expectedHash = "b4cb1c71c82f0eb1748125e1e9e147733bb3a9f23497498427e1d7b3a418b0f8";
+      const expectedLength = 59945624;
+      const expectedHash = "08afccc6f453094c3316e115866bc219ae303ad15a5fac2116fd2a3c88ec4eb1";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -58,7 +58,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v55b-b4cb1c71c82f0eb1");
+            url.searchParams.set("v", "v56-08afccc6f453094c");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache"
             });
