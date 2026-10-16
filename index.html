@@ -33,7 +33,7 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65029449" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65035449" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -41,7 +41,8 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v70-01.bin", 8000000],
+        ["runtime-v71-01.bin", 8000000],
+        ["runtime-v71-02.bin", 6000],
         ["runtime-v70-02.bin", 447],
         ["runtime-v66-02.bin", 114],
         ["runtime-v65-02.bin", 1954],
@@ -72,8 +73,8 @@
         ["runtime-v70-03.bin", 8000000],
         ["runtime-v70-04.bin", 942689]
       ];
-      const expectedLength = 65029449;
-      const expectedHash = "25ad33a29c04aa30df160e1f33e41a2184d70b23f104fc36a1367c42f96bacce";
+      const expectedLength = 65035449;
+      const expectedHash = "a11c32a3d81040af01f3fb4ef73f89612b31a8c328c156569351ed8583098067";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -176,7 +177,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v70-25ad33a29c04aa30");
+            url.searchParams.set("v", "v71-a11c32a3d81040af");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
