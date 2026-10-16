@@ -8,21 +8,33 @@
   <title>천년가족 · 브라우저 에디션</title>
   <style>
     *{box-sizing:border-box}
-    body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:24px;background:#eff3e8;color:#223d49;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;text-align:center}
-    main{width:min(100%,420px);padding:32px 24px;border-radius:20px;background:#fffcf5;box-shadow:0 12px 40px #223d4912}
+    body{margin:0;min-height:100vh;min-height:100dvh;display:grid;place-items:center;padding:24px;padding:max(24px,env(safe-area-inset-top)) max(24px,env(safe-area-inset-right)) max(24px,env(safe-area-inset-bottom)) max(24px,env(safe-area-inset-left));background:#eff3e8;color:#223d49;font-family:system-ui,-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;text-align:center}
+    main{width:min(100%,420px);min-width:0;padding:32px 24px;border-radius:20px;background:#fffcf5;box-shadow:0 12px 40px #223d4912}
     h1{margin:0 0 18px;font-size:28px}
     p{margin:8px 0;line-height:1.7}
-    #hint{color:#708087;font-size:14px}
+    #hint{color:#708087;font-size:14px;overflow-wrap:anywhere}
+    .progress-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:20px 0 8px;font-size:13px;font-variant-numeric:tabular-nums}
+    #progress-label{font-weight:700;color:#246b6f}
+    #progress-bytes{color:#708087;white-space:nowrap}
+    #progress{height:12px;overflow:hidden;border-radius:99px;background:#e2e9dc;box-shadow:inset 0 1px 2px #223d490c}
+    #progress-fill{display:block;width:0;height:100%;border-radius:inherit;background:#3d8a76}
+    main[data-stage="error"] #progress-fill{background:#b87657}
+    @media(max-width:340px){body{padding:16px;padding:max(16px,env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) max(16px,env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}main{padding:28px 18px}h1{font-size:26px}.progress-meta{font-size:12px;gap:8px}}
     button{margin-top:18px;border:0;border-radius:12px;padding:13px 24px;background:#246b6f;color:white;font:inherit;cursor:pointer;touch-action:manipulation}
     button:focus-visible{outline:3px solid #dc825c;outline-offset:3px}
     button[hidden]{display:none}
   </style>
 </head>
 <body>
-  <main>
-    <h1>천년가족</h1>
-    <p id="status" role="status" aria-live="polite">게임을 준비하고 있어요.</p>
-    <p id="hint">잠시만 기다려 주세요.</p>
+  <main data-stage="download" aria-labelledby="game-title">
+    <h1 id="game-title">천년가족</h1>
+    <p id="status" role="status" aria-live="polite">게임을 내려받고 있어요.</p>
+    <div class="progress-meta" aria-hidden="true">
+      <span id="progress-label">다운로드 0%</span>
+      <span id="progress-bytes">0.0 / 65.0 MB</span>
+    </div>
+    <div id="progress" role="progressbar" aria-label="게임 다운로드" aria-valuemin="0" aria-valuemax="65026235" aria-valuenow="0" aria-valuetext="다운로드 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
   <script>
@@ -63,25 +75,114 @@
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
+      const panel = document.querySelector("main");
+      const progress = document.getElementById("progress");
+      const fill = document.getElementById("progress-fill");
+      const label = document.getElementById("progress-label");
+      const amount = document.getElementById("progress-bytes");
       let loading = false;
+      let current = null;
+      const mb = value => (value / 1000000).toFixed(1);
+      function isCurrent(attempt) {
+        return current === attempt && attempt.active;
+      }
+      function assertCurrent(attempt) {
+        if (!isCurrent(attempt)) throw new Error("Loading cancelled");
+      }
+      function render(attempt) {
+        if (!isCurrent(attempt)) return;
+        const complete = attempt.downloadComplete;
+        const percent = complete ? 100 : Math.min(99, Math.floor(attempt.received * 100 / expectedLength));
+        const caption = complete ? "다운로드 완료 · 100%" : "다운로드 " + percent + "%";
+        const bytesText = mb(attempt.received) + " / " + mb(expectedLength) + " MB";
+        panel.dataset.stage = attempt.stage;
+        fill.style.width = percent + "%";
+        label.textContent = caption;
+        amount.textContent = bytesText;
+        progress.setAttribute("aria-valuenow", String(attempt.received));
+        progress.setAttribute("aria-valuetext", caption + ", " + bytesText);
+      }
+      function queueRender(attempt) {
+        if (!isCurrent(attempt) || attempt.renderQueued) return;
+        attempt.renderQueued = true;
+        // Coalesce stream reads without adding any estimated progress.
+        setTimeout(() => {
+          attempt.renderQueued = false;
+          render(attempt);
+        }, 80);
+      }
+      async function paint() {
+        // Yield before hashing/decoding the large runtime; background tabs must not stall.
+        await new Promise(resolve => {
+          const timer = setTimeout(resolve, 80);
+          if (typeof requestAnimationFrame === "function") {
+            requestAnimationFrame(() => requestAnimationFrame(() => {
+              clearTimeout(timer);
+              resolve();
+            }));
+          }
+        });
+      }
+      async function readPart(response, length, attempt) {
+        assertCurrent(attempt);
+        if (!response.body || typeof response.body.getReader !== "function") {
+          const bytes = new Uint8Array(await response.arrayBuffer());
+          assertCurrent(attempt);
+          if (bytes.length !== length) throw new Error("Incomplete game");
+          attempt.received += bytes.length;
+          queueRender(attempt);
+          return bytes;
+        }
+        const reader = response.body.getReader();
+        const bytes = new Uint8Array(length);
+        let offset = 0;
+        try {
+          while (true) {
+            const {done, value} = await reader.read();
+            assertCurrent(attempt);
+            if (done) break;
+            if (!value || value.byteLength === 0) continue;
+            if (offset + value.byteLength > length) throw new Error("Unexpected game length");
+            bytes.set(value, offset);
+            offset += value.byteLength;
+            attempt.received += value.byteLength;
+            queueRender(attempt);
+          }
+          if (offset !== length) throw new Error("Incomplete game");
+          return bytes;
+        } catch (error) {
+          // Also stop custom/legacy streams that do not honor fetch's abort signal.
+          Promise.resolve(reader.cancel()).catch(() => {});
+          throw error;
+        } finally {
+          reader.releaseLock();
+        }
+      }
       async function start() {
         if (loading) return;
+        if (current) {
+          current.active = false;
+          current.controller.abort();
+        }
+        const attempt = {controller:new AbortController(), active:true, received:0, downloadComplete:false, stage:"download", renderQueued:false};
+        current = attempt;
         loading = true;
         retry.hidden = true;
-        status.textContent = "게임을 준비하고 있어요.";
-        hint.textContent = "잠시만 기다려 주세요.";
+        status.textContent = "게임을 내려받고 있어요.";
+        hint.textContent = "처음에는 조금 걸릴 수 있어요.";
+        render(attempt);
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v66-03fab8cf9bc516c0");
+            url.searchParams.set("v", "v67-03fab8cf9bc516c0");
             const response = await fetch(url, {
-              mode: "same-origin", credentials: "omit", cache: "no-cache"
+              mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
+            assertCurrent(attempt);
             if (!response.ok) throw new Error("Unable to load game");
-            const bytes = new Uint8Array(await response.arrayBuffer());
-            if (bytes.length !== length) throw new Error("Incomplete game");
-            return bytes;
+            return readPart(response, length, attempt);
           }));
+          assertCurrent(attempt);
           let bytes = new Uint8Array(expectedLength);
           let offset = 0;
           for (const part of parts) {
@@ -89,19 +190,40 @@
             offset += part.length;
           }
           parts.length = 0;
-          if (offset !== expectedLength) throw new Error("Incomplete game");
+          if (offset !== expectedLength || attempt.received !== expectedLength) throw new Error("Incomplete game");
+          attempt.downloadComplete = true;
+          attempt.stage = "verify";
+          status.textContent = "파일을 확인하고 있어요.";
+          hint.textContent = "다운로드가 끝났어요. 조금만 기다려 주세요.";
+          render(attempt);
+          await paint();
+          assertCurrent(attempt);
           if (globalThis.crypto && globalThis.crypto.subtle) {
             const digest = await globalThis.crypto.subtle.digest("SHA-256", bytes);
+            assertCurrent(attempt);
             const hash = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
             if (hash !== expectedHash) throw new Error("Game changed while loading");
           }
+          attempt.stage = "prepare";
+          status.textContent = "게임을 준비하고 있어요.";
+          hint.textContent = "곧 가족을 만날 수 있어요.";
+          render(attempt);
+          await paint();
+          assertCurrent(attempt);
           let html = new TextDecoder("utf-8", {fatal:true}).decode(bytes);
           bytes = null;
+          assertCurrent(attempt);
           document.open();
           document.write(html);
           html = null;
           document.close();
         } catch (_) {
+          if (!isCurrent(attempt)) return;
+          attempt.stage = "error";
+          // Freeze the last real byte count, then reject every late callback from this attempt.
+          render(attempt);
+          attempt.active = false;
+          attempt.controller.abort();
           loading = false;
           status.textContent = "게임을 불러오지 못했어요.";
           hint.textContent = "연결을 확인하고 다시 시도해 주세요.";
