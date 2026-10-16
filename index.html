@@ -28,12 +28,12 @@
 <body>
   <main data-stage="download" aria-labelledby="game-title">
     <h1 id="game-title">천년가족</h1>
-    <p id="status" role="status" aria-live="polite">게임을 내려받고 있어요.</p>
+    <p id="status" role="status" aria-live="polite">게임을 로딩 중이에요.</p>
     <div class="progress-meta" aria-hidden="true">
-      <span id="progress-label">다운로드 0%</span>
+      <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 다운로드" aria-valuemin="0" aria-valuemax="65027309" aria-valuenow="0" aria-valuetext="다운로드 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65029449" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -41,7 +41,8 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v66-01.bin", 8000000],
+        ["runtime-v70-01.bin", 8000000],
+        ["runtime-v70-02.bin", 447],
         ["runtime-v66-02.bin", 114],
         ["runtime-v65-02.bin", 1954],
         ["runtime-v64-02.bin", 7915],
@@ -68,11 +69,11 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v65-05.bin", 8000000],
-        ["runtime-v68-03.bin", 8000000],
-        ["runtime-v68-04.bin", 940996]
+        ["runtime-v70-03.bin", 8000000],
+        ["runtime-v70-04.bin", 942689]
       ];
-      const expectedLength = 65027309;
-      const expectedHash = "640b26b9d703f65f7f89c83ec9e972ec587dba977687f786901baebe57dba225";
+      const expectedLength = 65029449;
+      const expectedHash = "25ad33a29c04aa30df160e1f33e41a2184d70b23f104fc36a1367c42f96bacce";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -94,7 +95,7 @@
         if (!isCurrent(attempt)) return;
         const complete = attempt.downloadComplete;
         const percent = complete ? 100 : Math.min(99, Math.floor(attempt.received * 100 / expectedLength));
-        const caption = complete ? "다운로드 완료 · 100%" : "다운로드 " + percent + "%";
+        const caption = complete ? "파일 로딩 · 100%" : "로딩 " + percent + "%";
         const bytesText = mb(attempt.received) + " / " + mb(expectedLength) + " MB";
         panel.dataset.stage = attempt.stage;
         fill.style.width = percent + "%";
@@ -169,13 +170,13 @@
         current = attempt;
         loading = true;
         retry.hidden = true;
-        status.textContent = "게임을 내려받고 있어요.";
+        status.textContent = "게임을 로딩 중이에요.";
         hint.textContent = "처음에는 조금 걸릴 수 있어요.";
         render(attempt);
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v68-640b26b9d703f65f");
+            url.searchParams.set("v", "v70-25ad33a29c04aa30");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
@@ -195,7 +196,7 @@
           attempt.downloadComplete = true;
           attempt.stage = "verify";
           status.textContent = "파일을 확인하고 있어요.";
-          hint.textContent = "다운로드가 끝났어요. 조금만 기다려 주세요.";
+          hint.textContent = "파일을 모두 불러왔어요. 조금만 기다려 주세요.";
           render(attempt);
           await paint();
           assertCurrent(attempt);
