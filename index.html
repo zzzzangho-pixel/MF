@@ -33,7 +33,7 @@
       <span id="progress-label">다운로드 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 다운로드" aria-valuemin="0" aria-valuemax="65026235" aria-valuenow="0" aria-valuetext="다운로드 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 다운로드" aria-valuemin="0" aria-valuemax="65027309" aria-valuenow="0" aria-valuetext="다운로드 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -56,7 +56,8 @@
         ["runtime-v52-02.bin", 1292],
         ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
-        ["runtime-v65-03.bin", 8000000],
+        ["runtime-v68-01.bin", 8000000],
+        ["runtime-v68-02.bin", 256],
         ["runtime-v65-04.bin", 6868],
         ["runtime-v64-04.bin", 40833],
         ["runtime-v63-04.bin", 5277],
@@ -67,11 +68,11 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v65-05.bin", 8000000],
-        ["runtime-v65-06.bin", 8000000],
-        ["runtime-v65-07.bin", 940178]
+        ["runtime-v68-03.bin", 8000000],
+        ["runtime-v68-04.bin", 940996]
       ];
-      const expectedLength = 65026235;
-      const expectedHash = "03fab8cf9bc516c00740cc94a5220aaff6806f96accb21ff10ad638b260ed1b6";
+      const expectedLength = 65027309;
+      const expectedHash = "640b26b9d703f65f7f89c83ec9e972ec587dba977687f786901baebe57dba225";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -174,7 +175,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v67-03fab8cf9bc516c0");
+            url.searchParams.set("v", "v68-640b26b9d703f65f");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
