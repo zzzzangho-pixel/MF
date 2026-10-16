@@ -29,7 +29,8 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v64-01.bin", 8000000],
+        ["runtime-v65-01.bin", 8000000],
+        ["runtime-v65-02.bin", 1954],
         ["runtime-v64-02.bin", 7915],
         ["runtime-v63-02.bin", 2964],
         ["runtime-v62-02.bin", 54],
@@ -42,7 +43,8 @@
         ["runtime-v52-02.bin", 1292],
         ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
-        ["runtime-v64-03.bin", 8000000],
+        ["runtime-v65-03.bin", 8000000],
+        ["runtime-v65-04.bin", 6868],
         ["runtime-v64-04.bin", 40833],
         ["runtime-v63-04.bin", 5277],
         ["runtime-v60-04.bin", 1215],
@@ -51,12 +53,12 @@
         ["runtime-v47-04.bin", 8000000],
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
-        ["runtime-v47-07.bin", 8000000],
-        ["runtime-v64-05.bin", 8000000],
-        ["runtime-v64-06.bin", 874378]
+        ["runtime-v65-05.bin", 8000000],
+        ["runtime-v65-06.bin", 8000000],
+        ["runtime-v65-07.bin", 940178]
       ];
-      const expectedLength = 64951499;
-      const expectedHash = "3bbc3fed4285a55cac53a8c77cc0fa41fd90d55570919b58404e54e4a9c7c21b";
+      const expectedLength = 65026121;
+      const expectedHash = "457bcb8c01602c3c74cbd0ffba1be2651525492a69e2d770127d168ef7a99747";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -70,7 +72,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v64-3bbc3fed4285a55c");
+            url.searchParams.set("v", "v65-457bcb8c01602c3c");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache"
             });
