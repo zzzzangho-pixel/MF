@@ -29,7 +29,8 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v63-01.bin", 8000000],
+        ["runtime-v64-01.bin", 8000000],
+        ["runtime-v64-02.bin", 7915],
         ["runtime-v63-02.bin", 2964],
         ["runtime-v62-02.bin", 54],
         ["runtime-v61-02.bin", 1302],
@@ -41,7 +42,8 @@
         ["runtime-v52-02.bin", 1292],
         ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
-        ["runtime-v63-03.bin", 8000000],
+        ["runtime-v64-03.bin", 8000000],
+        ["runtime-v64-04.bin", 40833],
         ["runtime-v63-04.bin", 5277],
         ["runtime-v60-04.bin", 1215],
         ["runtime-v59-02.bin", 2329],
@@ -50,10 +52,11 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v47-07.bin", 8000000],
-        ["runtime-v63-05.bin", 3960804]
+        ["runtime-v64-05.bin", 8000000],
+        ["runtime-v64-06.bin", 874378]
       ];
-      const expectedLength = 59989177;
-      const expectedHash = "b1bbeb0b90c7964356665f4cb596fe0e298d8fddb1c813ebe43a2d64008e3a2f";
+      const expectedLength = 64951499;
+      const expectedHash = "3bbc3fed4285a55cac53a8c77cc0fa41fd90d55570919b58404e54e4a9c7c21b";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -67,7 +70,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v63-b1bbeb0b90c79643");
+            url.searchParams.set("v", "v64-3bbc3fed4285a55c");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache"
             });
