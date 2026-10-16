@@ -33,7 +33,7 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65035449" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65048800" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -41,7 +41,8 @@
     (() => {
       "use strict";
       const files = [
-        ["runtime-v71-01.bin", 8000000],
+        ["runtime-v72-01.bin", 8000000],
+        ["runtime-v72-02.bin", 6993],
         ["runtime-v71-02.bin", 6000],
         ["runtime-v70-02.bin", 447],
         ["runtime-v66-02.bin", 114],
@@ -70,11 +71,12 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v65-05.bin", 8000000],
-        ["runtime-v70-03.bin", 8000000],
+        ["runtime-v72-03.bin", 8000000],
+        ["runtime-v72-04.bin", 6358],
         ["runtime-v70-04.bin", 942689]
       ];
-      const expectedLength = 65035449;
-      const expectedHash = "a11c32a3d81040af01f3fb4ef73f89612b31a8c328c156569351ed8583098067";
+      const expectedLength = 65048800;
+      const expectedHash = "95e10d1ec5530c3fb8bba25deb4839bdb7768a71dfa23664098b56808a45790c";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -177,7 +179,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v71-a11c32a3d81040af");
+            url.searchParams.set("v", "v72-95e10d1ec5530c3f");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
