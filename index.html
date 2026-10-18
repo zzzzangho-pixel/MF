@@ -33,7 +33,7 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65075405" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65844684" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -61,7 +61,8 @@
         ["runtime-v52-02.bin", 1292],
         ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
-        ["runtime-v76-01.bin", 8000000],
+        ["runtime-v79-01.bin", 8000000],
+        ["runtime-v79-02.bin", 69],
         ["runtime-v76-02.bin", 1311],
         ["runtime-v74-04.bin", 8445],
         ["runtime-v73-02.bin", 2798],
@@ -75,8 +76,9 @@
         ["runtime-v47-04.bin", 8000000],
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
-        ["runtime-v65-05.bin", 8000000],
-        ["runtime-v78-01.bin", 8000000],
+        ["runtime-v79-03.bin", 8000000],
+        ["runtime-v79-04.bin", 8000000],
+        ["runtime-v79-05.bin", 769210],
         ["runtime-v78-02.bin", 209],
         ["runtime-v77-02.bin", 221],
         ["runtime-v76-04.bin", 5102],
@@ -85,8 +87,8 @@
         ["runtime-v72-04.bin", 6358],
         ["runtime-v76-05.bin", 943106]
       ];
-      const expectedLength = 65075405;
-      const expectedHash = "ec2d630ec213b75b553abcbc8341acee88a8cd0258be47c2f858097700b662ac";
+      const expectedLength = 65844684;
+      const expectedHash = "d340ad6ed5f35406cc982f4d82c81d9db4b2d53652f6b92a171591688d7e905b";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -189,7 +191,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v78-ec2d630ec213b75b");
+            url.searchParams.set("v", "v79-d340ad6ed5f35406");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
