@@ -33,7 +33,7 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65068145" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65074975" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -61,7 +61,8 @@
         ["runtime-v52-02.bin", 1292],
         ["runtime-v49-02.bin", 728],
         ["runtime-02.bin", 8000000],
-        ["runtime-v74-03.bin", 8000000],
+        ["runtime-v76-01.bin", 8000000],
+        ["runtime-v76-02.bin", 1311],
         ["runtime-v74-04.bin", 8445],
         ["runtime-v73-02.bin", 2798],
         ["runtime-v68-02.bin", 256],
@@ -75,14 +76,15 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v65-05.bin", 8000000],
-        ["runtime-v75-r3-03.bin", 8000000],
+        ["runtime-v76-03.bin", 8000000],
+        ["runtime-v76-04.bin", 5102],
         ["runtime-v75-r3-04.bin", 3092],
         ["runtime-v74-06.bin", 2108],
         ["runtime-v72-04.bin", 6358],
-        ["runtime-v70-04.bin", 942689]
+        ["runtime-v76-05.bin", 943106]
       ];
-      const expectedLength = 65068145;
-      const expectedHash = "f000ee433c2265c1ab5659c03aed9dc0c780916e1e5ae4bf9dcb29930d5a77f3";
+      const expectedLength = 65074975;
+      const expectedHash = "e1e7cc15ce4e9dc938ba9c77910cbd95b026829786601c04e16b59e5a1daf4fb";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -185,7 +187,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v75-f000ee433c2265c1");
+            url.searchParams.set("v", "v76-e1e7cc15ce4e9dc9");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
