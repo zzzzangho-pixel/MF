@@ -33,7 +33,7 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65075196" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="65075405" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
@@ -76,7 +76,8 @@
         ["runtime-v47-05.bin", 8000000],
         ["runtime-v47-06.bin", 8000000],
         ["runtime-v65-05.bin", 8000000],
-        ["runtime-v77-01.bin", 8000000],
+        ["runtime-v78-01.bin", 8000000],
+        ["runtime-v78-02.bin", 209],
         ["runtime-v77-02.bin", 221],
         ["runtime-v76-04.bin", 5102],
         ["runtime-v75-r3-04.bin", 3092],
@@ -84,8 +85,8 @@
         ["runtime-v72-04.bin", 6358],
         ["runtime-v76-05.bin", 943106]
       ];
-      const expectedLength = 65075196;
-      const expectedHash = "a6ebb2fc62df679cf9612f5db5c91b8697e8b6f524b7b252be72c2f165af9240";
+      const expectedLength = 65075405;
+      const expectedHash = "ec2d630ec213b75b553abcbc8341acee88a8cd0258be47c2f858097700b662ac";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -188,7 +189,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v77-a6ebb2fc62df679c");
+            url.searchParams.set("v", "v78-ec2d630ec213b75b");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
