@@ -33,16 +33,16 @@
       <span id="progress-label">로딩 0%</span>
       <span id="progress-bytes">0.0 / 65.0 MB</span>
     </div>
-    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="67534689" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
+    <div id="progress" role="progressbar" aria-label="게임 로딩" aria-valuemin="0" aria-valuemax="67535628" aria-valuenow="0" aria-valuetext="로딩 0%, 0.0 / 65.0 MB" aria-describedby="hint"><span id="progress-fill"></span></div>
     <p id="hint">처음에는 조금 걸릴 수 있어요.</p>
     <button id="retry" type="button" hidden>다시 시도</button>
   </main>
   <script>
     (() => {
       "use strict";
-      const files = [["runtime-v89-01.bin", 8000000], ["runtime-v89-02.bin", 2093], ["runtime-v88-02.bin", 4588], ["runtime-v85-02.bin", 2333], ["runtime-v84-02.bin", 2244], ["runtime-v83-02.bin", 2320], ["runtime-v82-02.bin", 822], ["runtime-v75-r3-02.bin", 2335], ["runtime-v74-02.bin", 567], ["runtime-v72-02.bin", 6993], ["runtime-v71-02.bin", 6000], ["runtime-v70-02.bin", 447], ["runtime-v66-02.bin", 114], ["runtime-v65-02.bin", 1954], ["runtime-v64-02.bin", 7915], ["runtime-v63-02.bin", 2964], ["runtime-v62-02.bin", 54], ["runtime-v61-02.bin", 1302], ["runtime-v60-02.bin", 717], ["runtime-v58-02.bin", 1244], ["runtime-v57-02.bin", 228], ["runtime-v54-02.bin", 139], ["runtime-v53-02.bin", 187], ["runtime-v52-02.bin", 1292], ["runtime-v49-02.bin", 728], ["runtime-02.bin", 8000000], ["runtime-v89-03.bin", 8000000], ["runtime-v89-04.bin", 408], ["runtime-v88-04.bin", 71109], ["runtime-v87-02.bin", 893], ["runtime-v83-04.bin", 2239], ["runtime-v82-04.bin", 78150], ["runtime-v79-02.bin", 69], ["runtime-v76-02.bin", 1311], ["runtime-v74-04.bin", 8445], ["runtime-v73-02.bin", 2798], ["runtime-v68-02.bin", 256], ["runtime-v65-04.bin", 6868], ["runtime-v64-04.bin", 40833], ["runtime-v63-04.bin", 5277], ["runtime-v60-04.bin", 1215], ["runtime-v59-02.bin", 2329], ["runtime-v55b-02.bin", 10697], ["runtime-v47-04.bin", 8000000], ["runtime-v47-05.bin", 8000000], ["runtime-v47-06.bin", 8000000], ["runtime-v88-05.bin", 8000000], ["runtime-v90-01.bin", 8000000], ["runtime-v90-02.bin", 2008], ["runtime-v89-06.bin", 1713], ["runtime-v88-07.bin", 102776], ["runtime-v85-04.bin", 78], ["runtime-v84-04.bin", 3411], ["runtime-v83-06.bin", 8331], ["runtime-v82-07.bin", 1404582], ["runtime-v80-03.bin", 10], ["runtime-v79-05.bin", 769210], ["runtime-v78-02.bin", 209], ["runtime-v77-02.bin", 221], ["runtime-v76-04.bin", 5102], ["runtime-v75-r3-04.bin", 3092], ["runtime-v74-06.bin", 2108], ["runtime-v72-04.bin", 6358], ["runtime-v82-08.bin", 943003]];
-      const expectedLength = 67534689;
-      const expectedHash = "b80780bbd0850f09b148484d5d459db5a6aa20baf5b05aa19521d62faa4ba834";
+      const files = [["runtime-v91-01.bin", 8000000], ["runtime-v91-02.bin", 963], ["runtime-v89-02.bin", 2093], ["runtime-v88-02.bin", 4588], ["runtime-v85-02.bin", 2333], ["runtime-v84-02.bin", 2244], ["runtime-v83-02.bin", 2320], ["runtime-v82-02.bin", 822], ["runtime-v75-r3-02.bin", 2335], ["runtime-v74-02.bin", 567], ["runtime-v72-02.bin", 6993], ["runtime-v71-02.bin", 6000], ["runtime-v70-02.bin", 447], ["runtime-v66-02.bin", 114], ["runtime-v65-02.bin", 1954], ["runtime-v64-02.bin", 7915], ["runtime-v63-02.bin", 2964], ["runtime-v62-02.bin", 54], ["runtime-v61-02.bin", 1302], ["runtime-v60-02.bin", 717], ["runtime-v58-02.bin", 1244], ["runtime-v57-02.bin", 228], ["runtime-v54-02.bin", 139], ["runtime-v53-02.bin", 187], ["runtime-v52-02.bin", 1292], ["runtime-v49-02.bin", 728], ["runtime-02.bin", 8000000], ["runtime-v89-03.bin", 8000000], ["runtime-v89-04.bin", 408], ["runtime-v88-04.bin", 71109], ["runtime-v87-02.bin", 893], ["runtime-v83-04.bin", 2239], ["runtime-v82-04.bin", 78150], ["runtime-v79-02.bin", 69], ["runtime-v76-02.bin", 1311], ["runtime-v74-04.bin", 8445], ["runtime-v73-02.bin", 2798], ["runtime-v68-02.bin", 256], ["runtime-v65-04.bin", 6868], ["runtime-v64-04.bin", 40833], ["runtime-v63-04.bin", 5277], ["runtime-v60-04.bin", 1215], ["runtime-v59-02.bin", 2329], ["runtime-v55b-02.bin", 10697], ["runtime-v47-04.bin", 8000000], ["runtime-v47-05.bin", 8000000], ["runtime-v47-06.bin", 8000000], ["runtime-v88-05.bin", 8000000], ["runtime-v91-03.bin", 7999976], ["runtime-v90-02.bin", 2008], ["runtime-v89-06.bin", 1713], ["runtime-v88-07.bin", 102776], ["runtime-v85-04.bin", 78], ["runtime-v84-04.bin", 3411], ["runtime-v83-06.bin", 8331], ["runtime-v82-07.bin", 1404582], ["runtime-v80-03.bin", 10], ["runtime-v79-05.bin", 769210], ["runtime-v78-02.bin", 209], ["runtime-v77-02.bin", 221], ["runtime-v76-04.bin", 5102], ["runtime-v75-r3-04.bin", 3092], ["runtime-v74-06.bin", 2108], ["runtime-v72-04.bin", 6358], ["runtime-v82-08.bin", 943003]];
+      const expectedLength = 67535628;
+      const expectedHash = "ca2c12051bc3bcdc3271f894174947c111934fe1284fb600e9ee486a0dd8a35a";
       const status = document.getElementById("status");
       const hint = document.getElementById("hint");
       const retry = document.getElementById("retry");
@@ -145,7 +145,7 @@
         try {
           const parts = await Promise.all(files.map(async ([name, length]) => {
             const url = new URL(name, document.baseURI);
-            url.searchParams.set("v", "v90-b80780bbd0850f09");
+            url.searchParams.set("v", "v91-ca2c12051bc3bcdc");
             const response = await fetch(url, {
               mode: "same-origin", credentials: "omit", cache: "no-cache", signal: attempt.controller.signal
             });
